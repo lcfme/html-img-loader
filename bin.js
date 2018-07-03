@@ -26,6 +26,8 @@ function readArgv(visitor) {
         currentKey = null;
     }
     visitor(currentArgv, setKey, setValue, next);
+    if (_o.f) _o.filename = _o.f;
+    if (_o.s) _o.size = _o.s;
     if (!_o.filename)
         throw new Error('It must has --filename to specify html to transform.');
     _o.filename = path.resolve(cwd, _o.filename);
@@ -33,15 +35,12 @@ function readArgv(visitor) {
 }
 
 var opts = readArgv(function(currentArgv, setKey, setValue, next) {
-    if (currentArgv == '--filename' || currentArgv == '-f') {
-        setKey('filename');
-        return next();
+    var match;
+    if (match = currentArgv.match(/^\-{1,2}(\w+)/)) {
+        setKey(match[1]);
+    } else if (currentArgv) {
+        setValue(currentArgv);
     }
-    if (currentArgv == '--size' || currentArgv == '-s') {
-        setKey('size');
-        return next();
-    }
-    setValue(currentArgv);
     next();
 });
 

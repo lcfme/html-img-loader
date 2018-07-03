@@ -1,7 +1,7 @@
 {
   "name": "html-img-loader",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.3",
+  "description": "a loader to inject images as base64 string in .html file",
   "main": "HtmlLoader.js",
   "bin": "bin.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/lcfme/html-img-loader.git"
   },
-  "keywords": [],
+  "keywords": ["html-loader"],
   "author": "Liu Chaofan",
   "license": "MIT",
   "bugs": {
