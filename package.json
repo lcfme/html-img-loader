@@ -1,0 +1,25 @@
+{
+  "name": "html-img-loader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "HtmlLoader.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lcfme/html-img-loader.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lcfme/html-img-loader/issues"
+  },
+  "homepage": "https://github.com/lcfme/html-img-loader#readme",
+  "dependencies": {
+    "base64-js": "^1.3.0",
+    "cheerio": "^1.0.0-rc.2",
+    "mime": "^2.3.1"
+  }
+}
