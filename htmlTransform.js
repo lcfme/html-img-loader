@@ -6,17 +6,12 @@ var cheerio = require('cheerio');
 var mime = require('mime');
 var base64 = require('base64-js');
 
-module.exports = function(chunk, opts) {
-    var $ = cheerio.load(chunk);
-    var imgElements = (function(imgElements) {
-        return [].slice.call(imgElements).map(function(imgElement) {
-            return $(imgElement);
-        });
-    })($('img'));
+var IMGREGEXP = /(<img[^<>]*?\s+src=["'])([^'"<>+]+?)(['"][^<>]*?>)/gi;
 
-    imgElements.forEach(function(imgElement) {
+module.exports = function(chunk, opts) {
+    return chunk.replace(IMGREGEXP, function($0, $1, $2, $3) {
         try {
-            var src = imgElement.attr('src');
+            var src = $2;
             var dirname = path.dirname(opts.filename);
             var extname = path.extname(src);
             var destFile = path.resolve(dirname, src);
@@ -27,9 +22,9 @@ module.exports = function(chunk, opts) {
             var mimeInfo = mime.getType(extname);
             if (!mimeInfo) throw new Error('Unknown mimeType');
             base64Str = 'data:' + mimeInfo + ';base64,' + base64Str;
-            imgElement.attr('src', base64Str);
-        } catch (err) {}
+            return $1 + base64Str + $3;
+        } catch (err) {
+            return $0;
+        }
     });
-
-    return $.html();
 };

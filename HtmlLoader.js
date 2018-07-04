@@ -8,9 +8,20 @@ var htmlTransform = require('./htmlTransform');
 module.exports = HtmlLoader;
 
 function HtmlLoader(opts) {
+    var plugins = [], currentPlugin;
     if (!(this instanceof HtmlLoader)) return new HtmlLoader(opts);
-    this.stream = new HtmlTranStream(opts);
-    fs.createReadStream(opts.filename).pipe(this.stream);
+    if (Array.isArray(opts.plugin)) {
+        plugins = opts.plugin;
+        delete opts.plugin;
+    }
+    plugins.unshift(HtmlTranStream);
+    plugins = plugins.map(function(plugin) {
+        return typeof plugin === 'string' ? require(require.resolve(plugin))(opts) : plugin(opts);
+    });
+    this.stream = fs.createReadStream(opts.filename);
+    while (currentPlugin = plugins.shift()) {
+        this.stream = this.stream.pipe(currentPlugin);
+    }
     return this.stream;
 }
 
